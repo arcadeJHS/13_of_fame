@@ -1,6 +1,6 @@
 (function () {
 "use strict";
-var b1,b2,j1,j2,j3,c1,c2,playGame;
+var b1,b2,c1,c2,playGame;
 var monitor = {
 	resolution: { width: 384, height: 272 },
 	pixelSize: 2
@@ -9,118 +9,105 @@ var dt = initData();
 function initData() {
 	dt = {	
 		pal : [
-			// 0  1      2      3         4         5      6         7         8         9         a         b         c         d         e
-			"", "000", "FFF", "9f9f9f", "31302f", "f00", "42362a", "9d986e", "645c51", "271d13", "E4B34D", "A8751A", "D4A03B", "A1F8F6", "0078F8"
+			// 0  1      2      3         4         5      6         7         8         9         a         b         c         d         e         f
+			"", "000", "FFF", "9f9f9f", "31302f", "f00", "42362a", "9d986e", "645c51", "271d13", "E4B34D", "A8751A", "D4A03B", "A1F8F6", "0078F8", "CBCBCB"
 		],	
 		tiles: [
 			[	// 1 - wall block
-				[3,1,0,0],	
-				"17002"+"103f0"+"107f0"+"10bf0"+"10ff0"+"17101"+"1f002"+"13402"+"1b402"+"13c02"+"1bc02"+"17802"+"1f802"
-			],
+				[3,1,0,0], "17002103f0107f010bf010ff0171011f002134021b40213c021bc02178021f802" ],
 			[	// 2 - score top left
-				[6,7,8,0],
-				b1="100f0"+"2010e"+"153a0"+"25401"+"23510"+"23609"
-			],
+				[6,7,8,0], b1="100f02010e153a0254012351023609" ],
 			[	// 3 - score top right
-				[6,7,8,0],
-				b1,
-				true
-			],
+				[6,7,8,0], b1, true ],
 			[	// 4 - score bottom left
-				[6,7,8,9],
-				b2="2000f"+"23009"+"33a10"+"25a01"+"35ca0"+"31fe0"
-			],
+				[6,7,8,9], b2="2000f2300933a1025a0135ca031fe0" ],
 			[	// 5 - score bottom right
-				[6,7,8,9],
-				b2,
-				true
-			],
+				[6,7,8,9], b2, true ],
 			[	// 6 - score middle top
-				[6,7,8,0],
-				"100f0"+"103f0"
-			],
+				[6,7,8,0], "100f0103f0" ],
 			[	// 7 - score middle bottom
-				[6,7,8,9],
-				"30ff0"+"30cf0"
-			],
+				[6,7,8,9], "30ff030cf0" ],
 			[	// 8 - jail door
-				[7,6,4,0],	
-				"1000f"+"1300f"+"1600f"+"1900f"+"1c00f"+"1f00f"+"21111"+"21d11"+"2d711"
-			],
+				[7,6,4,0], "1000f1300f1600f1900f1c00f1f00f2111121d112d711" ],
 			[	// 9 - sea side 1 - curve
-				[10,14,13,0],	
-				"130cb"+"21011"+"23211"+"21413"+"23811"+"23a31"+"26a11"+"28c11"+"2aa31"+"2dc21"
-			],
+				[10,14,13,0], "130cb2101123211214132381123a3126a1128c112aa312dc21" ],
 			[	// a - sea side 1 - horizontal
-				[10,14,13,0],	
-				"100fb"+"20c11"+"22a31"+"26811"+"28a11"+"06a11"+"2ac31"+"2ea11"
-			],
+				[10,14,13,0], "100fb20c1122a312681128a1106a112ac312ea11" ],
 			[	// b - sea side 1 - vertical
-				[10,14,13,0],	
-				"130cf"+"21e11"+"23a13"+"25811"+"23611"+"03811"+"21213"+"23011"
-			],
-			[	// c - sea 
-				[10,14,13,0],	
-				"100ff"
-			],
-			[	// d - sand
-				[10,11,12,0],	
-				"13100"+"14200"+"1b400"+"23600"+"27600"+"2d600"+"25900"+"19900"+"13a00"+"27b00"+"1cc00"+"15d00"+"2cd10"
-			],
-			[	// e - jail placeholder
-				[0,1,0,0],	
-				"100ff"
-			],
-			[	// f - cloud top left
-				[0,13,2,1],	
-				c1="239c6"+"157a0"+"138c0"+"12930"+"12a10"+"11b20"+"11c13"+"3fb04"+"38b14"
-			],
-			[	// g - cloud top right
-				[0,13,2,1],
-				c1,	
-				true
-			],
-			[	// h - cloud bottom left
-				[0,13,2,1],	
-				c2="230c6"+"11013"+"11420"+"12510"+"12630"+"137c0"+"158a0"+"3f001"+"3f301"+"38011"+"38311"
-			],
-			[	// i - cloud bottom right
-				[0,13,2,1],	
-				c2,
-				true
-			],
-			[	// j - bridge
-				[7,6,4,0],	
-				"1000f"+"1300f"+"1600f"+"1900f"+"1c00f"+"1f00f"
-			],
-			[	// k - knight 1 - enemy
-				[0,2,3,4],	
-				"26855"+"14077"+"36251"+"38411"+"30855"+"26871"+"1e811"+"2e017"+"36a11"+"3aa11"+"35e11"+"3ae11"
-			],
-			[	// l - knight 2 - templar
-				[0,5,3,4],	
-				"25045"+"24103"+"2a103"+"35340"+"37401"+"35640"+"24764"+"25c41"+"35e11"+"38e11"+"33706"+"34c01"+"3ac01"+"3b805"+"3c904"+"3db02"+"3ed00"+"16820"+"17900"+"15902"+"16a20"+"19902"+"17b00"+"16c20"
-			]
+				[10,14,13,0], "130cf21e1123a132581123611038112121323011" ],	
+			[	// c - stone
+				[10,2,11,16], "2422023310273302241029430215102b510216042c711" ],
+			// blocking edge: 13 ------------------------------
+			[	// d - sea 
+				[10,14,13,0], "100ff" ],
+			[	// e - sand
+				[10,11,12,0], "13100142001b40023600276002d600259001990013a0027b001cc0015d002cd10" ],
+			[	// f - jail placeholder
+				[0,1,0,0], "100ff" ],			
+			[	// g - bridge
+				[7,6,4,0], "1000f1300f1600f1900f1c00f1f00f" ],
+			[	// h - knight 1 - enemy
+				[0,2,3,4], "2685514077362513841130568268711e8112e01736a113aa1135e113ae11" ],
+			[	// i - knight 2 - templar
+				[0,5,3,4], "25045241032a1033534037401356402476425c4135e1138e113370634c013ac013b8053c90416820179001590216a201990217b0016c20" ],
+			[	// l - ship - bottom - 0
+				[14,7,6,2], "110e1122d0143b01649018573198631ac501bd411cf30210e0243602b4402c5002d601298302e8002d9202ce202ff00" ],
+			[	// m - ship - bottom - 1
+				[14,7,6,2], "100ff20050270812d2002e3002f40020420235b02092023a3027b802cc002dd002ee0120f20" ],
+			[	// n - ship - bottom - 2
+				[14,7,6,2], "100ff200a22b14120500216e020bf0" ],
+			[	// o - ship - bottom - 3
+				[14,7,6,2], "100ff210e0201f0202b02e2002f301235c0206202270023800249002f90020af02fe0029f50" ],
+			[	// p - ship - bottom - 4
+				[14,7,6,2], "100f5106e1108d0109c110bb010ca010d9010e7010f60200f0201902f300224d0205102e60129840209802c90120b002bb0021c102ac0023d6020e3027e0026f00" ],
+			[	// q - ship - bottom - 5
+				[14,7,6,2], "200e0101c02d1001024025200203302041020500" ],
+			[	// r - ship - middle - 0
+				[14,7,6,2], "21be011ce011d0222d0216d0227d021cd022dd02" ],
+			[	// s - ship - middle - 1
+				[14,7,6,2], "20b7010c6011d0222d0216d0227c033b0443c5331c8201f900" ],
+			[	// t - ship - middle - 2
+				[14,7,6,2], "3007938207396033a8023ba001094015a401ab101c02f1bd022f0061f709" ],
+			[	// u - ship - middle - 3
+				[14,7,6,2], "340b0351a2344b1336c033780328703296031a0033a3031b102070410c0311c1021d0213b4018a401d920" ],
+			[	// v - ship - middle - 4
+				[14,7,6,2], "3004635105363033750134730187102a7001384010920" ],
+			[	// w - ship - top - 0
+				[14,7,6,2], "3fa053eb043dd023cf00" ],
+			[	// x - ship - top - 1
+				[14,7,6,2], "1c1072d10715730196601c9162e9063972035850309a030a9130c8130e713e7103f800" ],
+			[	// y - ship - top - 2
+				[14,7,6,2], "11540106003166030790308b0309d032ad033bc234eb1" ],
+			[	// z - ship - top - 3
+				[14,7,6,2], "30b0431c1333d0234f00" ],			
+			[	// cloud top left
+				[0,13,2,1], c1="239c6157a0138c01293012a1011b2011c133fb0438b14" ],
+			[	// cloud top right
+				[0,13,2,1], c1, true ],
+			[	// cloud bottom left
+				[0,13,2,1], c2="230c611013114201251012630137c0158a03f0013f3013801138311" ],
+			[	// cloud bottom right
+				[0,13,2,1], c2, true ]
 		],
 		scene: [[[	"266666666666666666666663"+
 					"477777777777777777777775"+		
-					"1000dd00000000d0bcccccc1"+
-					"10d00d000d000d00bcccccc1"+				
-					"10000000000d000dbcccccc1"+						
-					"1000d0000d000000bcccccc1"+				
-					"10000d00000000009aajaaa1"+
-					"10000000d0000d0000000d01"+
-					"100d00000000000d0d000001"+
-					"100000d0000d0000000d0001"+
-					"10d0000000000000000000d1"+								
-					"1000d00000000000000d0001"+
-					"10000000d000d000d0000001"+
-					"100000d00000000000118111"+
-					"10d0000000d00d00001eeee1"+
-					"1000d0000000000d001eeee1"+
+					"1000ee00000000e0bdddddd1"+
+					"10e00e000e000e00bduvwxd1"+				
+					"1000c000000e0c0ebpqrstd1"+						
+					"1000e0000e000000bjkgmno1"+				
+					"10e00000000000009aagaaa1"+
+					"100000c0cccc0e0000000e01"+
+					"10000cc0000c000e0e000001"+
+					"1c0000c0cccc000c000e0001"+
+					"10e000c0000c0000e00c00e1"+								
+					"100000c0cccc0000000e0001"+
+					"100e0000e000e000e0000001"+
+					"100000e0000000c000118111"+
+					"10e0000000e00e00001ffff1"+
+					"1000e000000c000e001ffff1"+
 					"111111111111111111111111"
 		]]],
-		strings: {splash:"The myth tells us that on Friday, 13 October 1307, the Knights Templar were arrested, charged with heresy, immorality and abuses. The fear of Friday the 13th was born.<br/><br/>Save 13 knights from jail, and help them to board the ship to a new world.<span id='btn-play' class='lnk-txt' style='margin-top:"+4*16*monitor.pixelSize+"px;'>Play</span>",over:"You loose!<br/><br/>Oh, forever unlucky Friday the 13th!<span id='btn-play' class='lnk-txt' style='margin-top:"+8*16*monitor.pixelSize+"px;'>Play again</span>",win:"You win!<br/><br/>You saved the World from Friday the 13th curse!<span id='btn-play' class='lnk-txt' style='margin-top:"+5*16*monitor.pixelSize+"px;'>Play again</span>"},
+		strings: {splash:"The myth tells us that on Friday, 13 October 1307, the Knights Templar were arrested, charged with heresy, immorality and abuses. The fear of Friday the 13th was born.<br/><br/>Save 13 knights from jail, and help them to board the ship to a new world.<span id='btn-play' class='lnk-txt' style='margin-top:"+4*16*monitor.pixelSize+"px;' title='Press me to play!'>load\"*\",8,1</span>",over:"You loose!<br/><br/>Oh, forever unlucky Friday the 13th!<span id='btn-play' class='lnk-txt' style='margin-top:"+8*16*monitor.pixelSize+"px;'>Play again</span>",win:"You win!<br/><br/>You saved the World from Friday the 13th curse!<span id='btn-play' class='lnk-txt' style='margin-top:"+5*16*monitor.pixelSize+"px;'>Play again</span>"},
 		spriteHTML: [],
 		curScene: -1,
 		coins: 0,
@@ -152,7 +139,6 @@ function initData() {
 					"") + 
 				"' >"
 			) + 
-
 			((dt.tiles[i][0][parseInt(pix[b],16)] !== "") ? 
 			("<div style='" +
 			"left:" + (dt.tiles[i][2] ? ((16)-parseInt(pix[b+1],16) - (parseInt(pix[b+3],16)+1)) : parseInt(pix[b+1],16))*monitor.pixelSize + "px;" +
@@ -163,7 +149,6 @@ function initData() {
 			"overflow:hidden;" +
 			"'></div>") :
 			"") +
-
 			( (b+=5) >= pix.length ? "</div>" : "");
 		}
 	}
@@ -210,7 +195,7 @@ function block(x, y) {
 	{
 		layer = dt.map[l].split("");
 		if (	layer[Math.floor(y/(dt.size)) * 24 + Math.floor(x/(dt.size))] !== "0" &&
-				parseInt(layer[Math.floor(y/(dt.size)) * 24 + Math.floor(x/(dt.size))], 16) < 12 ) {
+				parseInt(layer[Math.floor(y/(dt.size)) * 24 + Math.floor(x/(dt.size))], 16) < 13 ) {
 			return true;	// block if at least one layer has blocking element in given position
 		}
 	}
@@ -273,10 +258,10 @@ function mSprite(o) {
 					(this.mov.x =
 						(this.enemy ?
 							(dt.activeKnight.newPos.x <= this.oldPos.x ? 
-								Math.max(-2+Math.random(), --this.mov.x+Math.random()) : // speed to left
+								Math.max(-1.5+Math.random(), --this.mov.x+Math.random()) : // speed to left
 								(
 									dt.activeKnight.newPos.x >= this.oldPos.x ? 
-									Math.min(2+Math.random(), ++this.mov.x+Math.random()) :	// speed to right
+									Math.min(1.5+Math.random(), ++this.mov.x+Math.random()) :	// speed to right
 									(	Math.abs(this.mov.x) > 0.7 *monitor.pixelSize ?
 										(this.mov.x < 0 ? (this.mov.x+0.7*monitor.pixelSize) : (this.mov.x-0.7*monitor.pixelSize)) :
 										0
@@ -306,10 +291,10 @@ function mSprite(o) {
 					(this.mov.y =
 						(this.enemy ?		
 							(dt.activeKnight.newPos.y <= this.oldPos.y ? 
-								Math.max(-2+Math.random(), --this.mov.y+Math.random()) : // speed up
+								Math.max(-1.5+Math.random(), --this.mov.y+Math.random()) : // speed up
 								(
 									dt.activeKnight.newPos.y >= this.oldPos.y ?  
-									Math.min(2+Math.random(), ++this.mov.y+Math.random()) :	// speed down
+									Math.min(1.5+Math.random(), ++this.mov.y+Math.random()) :	// speed down
 									(Math.abs(this.mov.y) > 0.7*monitor.pixelSize ? (this.mov.y < 0 ? (this.mov.y+0.7*monitor.pixelSize) : (this.mov.y-0.7*monitor.pixelSize)) : 0)
 								)
 							) :
@@ -395,10 +380,10 @@ function mSprite(o) {
 	
 	this.imprecate = function() {
 		dt.dom.game.innerHTML +=	"<div id='cloud' style='position: absolute;left:"+(this.newPos.x+dt.size/2)+"px;top:"+(this.newPos.y-dt.size)+"px;width:"+64+"px;height:"+128+"px;'>" +
-										"<div style='left: 0; top: 0;'>"+dt.spriteHTML[14]+"</div>" +
-										"<div style='left: 32px; top: 0;'>"+dt.spriteHTML[15]+"</div>" +
-										"<div style='left: 0px; top: 32px;'>"+dt.spriteHTML[16]+"</div>" +
-										"<div style='left: 32px; top: 32px;'>"+dt.spriteHTML[17]+"</div>" +
+										"<div style='left: 0; top: 0;'>"+dt.spriteHTML[33]+"</div>" +
+										"<div style='left: 32px; top: 0;'>"+dt.spriteHTML[34]+"</div>" +
+										"<div style='left: 0px; top: 32px;'>"+dt.spriteHTML[35]+"</div>" +
+										"<div style='left: 32px; top: 32px;'>"+dt.spriteHTML[36]+"</div>" +
 									"</div>";
 	};
 	
@@ -440,12 +425,8 @@ function setScene(o)
 		// splash monitor
 		case "SPLASH":
 			drawText({ string: dt.strings.splash });
-			$("#btn-play").addEventListener("click", function(){ dt.activeScene = "GAME"; playGame(); }, false);				
-			(function animate() {		
-				cancelAnimationFrame(dt.interval);
-				dt.interval = requestAnimationFrame(animate, $("#btn-play"));
-				$("#btn-play").style.color = txtColor();				
-			})();						
+			$("#btn-play").addEventListener("click", function(){ dt.activeScene = "GAME"; playGame(); }, false);
+			applyColors();			
 			break;
 		
 		// standard gameplay
@@ -464,7 +445,7 @@ function setScene(o)
 						kn.draw();
 						break;
 					case "S":	// ship
-						kn.start = kn.newPos = {x:20+Math.random(),y:3};
+						kn.start = kn.newPos = {x:20+Math.random(),y:4};
 						kn.draw();
 						break;
 				}
@@ -474,7 +455,7 @@ function setScene(o)
 			dt.activeKnight =	new mSprite({	
 									id: dt.knights.length,
 									start: {x:1,y:15},
-									html: "<div style='left:"+(0*16)+"px;'>"+dt.spriteHTML[20]+"</div>",
+									html: "<div style='left:"+(0*16)+"px;'>"+dt.spriteHTML[17]+"</div>",
 									collection: dt.knights
 								}).draw();
 			
@@ -484,7 +465,7 @@ function setScene(o)
 				new mSprite({
 					id: z,
 					start: {x: (Math.floor(Math.random()*19)+3), y: (Math.floor(Math.random()*14)+2)},
-					html: "<div style='left:"+(0*16)+"px;'>"+dt.spriteHTML[19]+"</div>",
+					html: "<div style='left:"+(0*16)+"px;'>"+dt.spriteHTML[16]+"</div>",
 					collection: dt.enemies,
 					enemy: true
 				}).draw();
@@ -503,7 +484,7 @@ function setScene(o)
 					dt.knights[k].move();
 					
 					// knight reaches ship
-					if ( !dt.breakScene && dt.activeKnight.newPos.x >= (18*(dt.size)) && dt.activeKnight.newPos.x <= (19*(dt.size)+dt.size) && (dt.activeKnight.newPos.y <= (6*(dt.size))) )
+					if ( !dt.breakScene && dt.activeKnight.newPos.x >= (18*(dt.size)) && dt.activeKnight.newPos.x <= (19*(dt.size)+dt.size) && (dt.activeKnight.newPos.y <= (5*(dt.size))) )
 					{
 						dt.breakScene = true;
 						dt.activeKnight.state = "S";						
@@ -548,7 +529,7 @@ function setScene(o)
 			// else game goes on
 			else
 			{
-				if (dt.numEnemies < 5) {dt.numEnemies--;}
+				if (dt.numEnemies > 5) {dt.numEnemies--;}
 				dt.activeScene = "GAME";
 			}
 			
@@ -586,22 +567,18 @@ function setScene(o)
 		case "OVER":
 			drawText({ string: dt.strings.over });
 			$("#btn-play").addEventListener("click", function(){ dt = initData(); dt.activeScene = "GAME"; playGame(); }, false);
-			(function animate() {		
-				cancelAnimationFrame(dt.interval);
-				dt.interval = requestAnimationFrame(animate, $("#btn-play"));
-				$("#btn-play").style.color = txtColor();				
-			})();
+			applyColors();
 			break;
 	}
 	
 	dt.callbackTime = null;
 }
-var ra = 0;
-function colorStripes() {		
-	cancelAnimationFrame(ra);
-	ra = requestAnimationFrame(colorStripes, $("#colors"));
-	var h = "", t = 20;
-	for (var i = 0; i < 5; i++) {
+
+function applyColors() {		
+	cancelAnimationFrame(dt.interval);
+	dt.interval = requestAnimationFrame(applyColors, $("#colors"));
+	var h = "", t = 2;
+	for (var i = 0; i < 50; i++) {
 		h += "<div class='stripe' style='top:"+t*i+"%; background:"+txtColor()+";'></div>";
 	}
 	$("#colors").innerHTML = h;
@@ -669,8 +646,6 @@ window.onload = playGame = function() {
 								"<p id='title' class='arcadeText' style='line-height:"+dt.size+"px; left:"+dt.size+"px;'>13th oF fAmE</p>");
 	
 	setScene(dt.activeScene);
-	
-	colorStripes();
 	
 };
 }());
